@@ -1,0 +1,14 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="skillsbasedroutingcontroller">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="options" type="List" access="PRIVATE" />
+    <aura:attribute name="selectedValue" type="String" access="PRIVATE" />
+    <aura:attribute name="recordId" type="String" />
+    <lightning:select name="skillIdLIst" label="Select a skill to transfer" aura:id="skillListId"
+        value="{!v.selectedValue}">
+        <option value="">-- None --</option>
+        <aura:iteration items="{!v.options}" var="option">
+            <option text="{!option.MasterLabel}" value="{!option.Id}" selected="{!option.selected}" />
+        </aura:iteration>
+    </lightning:select>
+    <lightning:button variant="brand" label="Route To Skill" title="Route To Skill" onclick="{!c.handleRouting}" />
+</aura:component>
