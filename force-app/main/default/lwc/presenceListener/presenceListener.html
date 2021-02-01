@@ -1,0 +1,24 @@
+<template>
+  <c-presence-util onuserpresence={handleNotification}></c-presence-util>
+  <lightning-card title="User Presences" icon-name="custom:custom14">
+    <ul class="slds-m-around_medium">
+      <template for:each={presenceArray} for:item="presenceObj">
+        <li key={presenceObj.data.Id}>
+          {presenceObj.awayStatus}
+          <lightning-formatted-date-time
+            value={presenceObj.data.CreatedDate}
+            year="numeric"
+            month="numeric"
+            day="numeric"
+            hour="2-digit"
+            minute="2-digit"
+            time-zone-name="short"
+          ></lightning-formatted-date-time>
+          &nbsp;
+          <b>{presenceObj.data.User.Name}: </b>
+          {presenceObj.data.ServicePresenceStatus.MasterLabel}
+        </li>
+      </template>
+    </ul>
+  </lightning-card>
+</template>
