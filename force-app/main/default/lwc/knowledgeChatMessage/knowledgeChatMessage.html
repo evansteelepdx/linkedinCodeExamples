@@ -1,0 +1,16 @@
+<template>
+  <template if:true={isMessageVisible}>
+    <div class={messageStyle}>
+      <lightning-formatted-rich-text value={messageContent.value}>
+      </lightning-formatted-rich-text>
+    </div>
+  </template>
+  <template if:true={isLinkVisible}>
+    <div class={messageStyle}>
+      <p>Click for knowledge</p>
+      <a href={knowledgeURL} target="_blank">
+        <img class="resize" src={knowledgeImage} />
+      </a>
+    </div>
+  </template>
+</template>
