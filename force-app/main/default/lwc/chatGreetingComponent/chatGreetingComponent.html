@@ -1,0 +1,24 @@
+<template>
+  <lightning-card icon-name="custom:custom19">
+    <lightning-record-edit-form
+      record-id={userId}
+      object-api-name="User"
+      onsuccess={handleSuccess}
+    >
+      <div class="slds-m-around_medium">
+        <p>Update Chat Greeting</p>
+        <lightning-output-field field-name="Name"> </lightning-output-field>
+      </div>
+      <lightning-input-field field-name="Bot_Greeting_Selection__c">
+      </lightning-input-field>
+      <lightning-button
+        class="slds-m-top_small"
+        variant="brand"
+        type="submit"
+        name="update"
+        label="Update Greeting"
+      >
+      </lightning-button>
+    </lightning-record-edit-form>
+  </lightning-card>
+</template>
