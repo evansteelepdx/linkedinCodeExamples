@@ -1,0 +1,261 @@
+{
+  "info": {
+    "_postman_id": "0ea92289-0f53-475b-a70b-7d8e9a273464",
+    "name": "Salesforce Apex Debug Logs",
+    "description": "Sample Postman collection for retrieving Apex debug logs through the API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "OAuth",
+      "item": [
+        {
+          "name": "Get Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"200 Response Code\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Token Check\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.token_type).to.eql(\"Bearer\");",
+                  "});",
+                  "var jsonData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"ORG_TOKEN\", jsonData.access_token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{CLIENT_ID}}",
+                  "type": "text"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "{{CLIENT_SECRET}}",
+                  "type": "text"
+                },
+                {
+                  "key": "redirectUri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "{{CLIENT_USERNAME}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLIENT_PASSWORD}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{ORG_URL}}services/oauth2/token",
+              "host": ["{{ORG_URL}}services"],
+              "path": ["oauth2", "token"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ApexLog API",
+      "item": [
+        {
+          "name": "Query Debug Logs",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "let query = `",
+                  "",
+                  "Select Id, StartTime from ApexLog order by StartTime DESC",
+                  "",
+                  "`",
+                  "query = query.trim();",
+                  "let encoded = encodeURIComponent(query);",
+                  "pm.environment.set('QUERY',encoded);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"200 Response Code\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Anonymous Apex Success Check\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{ORG_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{ORG_URL}}{{ORG_API}}tooling/query?q={{QUERY}}",
+              "host": ["{{ORG_URL}}{{ORG_API}}tooling"],
+              "path": ["query"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "{{QUERY}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retreive Debug Log",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"200 Response Code\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{ORG_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{ORG_URL}}{{ORG_API}}sobjects/ApexLog/{{ORG_LOG_ID}}/Body",
+              "host": ["{{ORG_URL}}{{ORG_API}}sobjects"],
+              "path": ["ApexLog", "{{ORG_LOG_ID}}", "Body"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ]
+    }
+  ]
+}
