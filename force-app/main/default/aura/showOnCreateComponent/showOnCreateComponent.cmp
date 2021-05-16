@@ -1,0 +1,12 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+	<lightning:workspaceAPI aura:id="workspace" />
+	<lightning:utilityBarAPI aura:id="utilitybar" />
+
+	<aura:handler
+		name="showOnCreateEventHandler"
+		event="c:showOnCreateEvent"
+		action="{!c.handleShowOnCreateEvent}"
+		includeFacets="true"
+	/>
+	<c:showOnCreateEventEmitter />
+</aura:component>
