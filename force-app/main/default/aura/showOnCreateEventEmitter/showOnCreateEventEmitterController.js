@@ -12,6 +12,7 @@
 					var action = component.get("c.returnChatCases");
 
 					action.setParams({ currentChatTranscript: response.recordId });
+
 					action.setCallback(this, function (response) {
 						var state = response.getState();
 
@@ -34,5 +35,15 @@
 			.catch(function (error) {
 				console.log(error);
 			});
+	},
+	onCheckCases: function (component, event, helper) {
+		var caseValue = component.find("checkCases").get("v.value");
+
+		component.set("v.showCases", caseValue);
+	},
+	onCheckContacts: function (component, event, helper) {
+		var contactValue = component.find("checkContacts").get("v.value");
+
+		component.set("v.showContacts", contactValue);
 	}
 });

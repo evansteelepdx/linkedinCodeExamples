@@ -4,4 +4,12 @@
 
 	<aura:registerEvent name="showOnCreateEventHandler" type="c:showOnCreateEvent" />
 	<aura:handler event="lightning:tabCreated" action="{! c.onTabCreated }" />
+
+	<aura:attribute name="showCases" type="Boolean" default="false" />
+	<aura:attribute name="showContacts" type="Boolean" default="false" />
+
+	<lightning:card title="Select related Chat records to show">
+		<ui:inputCheckbox aura:id="checkCases" label="Show Cases?" change="{!c.onCheckCases}" />
+		<ui:inputCheckbox aura:id="checkContacts" label="Show Contacts?" change="{!c.onCheckContacts}" />
+	</lightning:card>
 </aura:component>
