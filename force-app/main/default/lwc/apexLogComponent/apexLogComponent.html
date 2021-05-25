@@ -1,0 +1,25 @@
+<template>
+  <lightning-card title="Apex Log Search" icon-name="custom:custom63">
+    <div class="slds-m-around_medium">
+      <lightning-input
+        label="Log string to search"
+        onchange={handleKeyChange}
+      ></lightning-input>
+      <p class="slds-m-bottom_small">
+        <lightning-button
+          label="Search"
+          onclick={handleLoad}
+        ></lightning-button>
+      </p>
+      <template if:true={logIds}>
+        <template for:each={logIds} for:item="logId">
+          <p key={logId}>{logId}</p>
+        </template>
+      </template>
+      <template if:true={error}>
+        <h1>An error has occurred:</h1>
+        <p>{error}</p>
+      </template>
+    </div>
+  </lightning-card>
+</template>
