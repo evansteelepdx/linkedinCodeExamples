@@ -1,19 +1,31 @@
 <template>
   <lightning-card title="Apex Log Search" icon-name="custom:custom63">
+    <lightning-combobox
+      name="logUserName"
+      label="Log User"
+      value={logUserValue}
+      placeholder="Select log user..."
+      options={logUserOptions}
+      onchange={logUserChange}
+    ></lightning-combobox>
     <div class="slds-m-around_medium">
       <lightning-input
         label="Log string to search"
         onchange={handleKeyChange}
       ></lightning-input>
-      <p class="slds-m-bottom_small">
-        <lightning-button
-          label="Search"
-          onclick={handleLoad}
-        ></lightning-button>
-      </p>
+      <template if:true={logUserValue}>
+        <template if:true={searchKey}>
+          <p class="slds-m-bottom_small">
+            <lightning-button
+              label="Search"
+              onclick={handleLoad}
+            ></lightning-button>
+          </p>
+        </template>
+      </template>
       <template if:true={logIds}>
         <template for:each={logIds} for:item="logId">
-          <p key={logId}>{logId}</p>
+          <p key={logId.Id}>{logId.Id} size: {logId.LogLength}</p>
         </template>
       </template>
       <template if:true={error}>

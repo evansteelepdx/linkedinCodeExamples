@@ -1,13 +1,33 @@
 public with sharing class apexLogComponentController {
   @AuraEnabled
-  public static List<Id> getApexLogList(String searchTerm) {
+  public static List<ApexLog> getApexLogList(String searchTerm) {
     try {
-      List<Id> logIdList = new List<Id>();
-      logIdList.add('07L5Y00004iThzzUAC');
-      logIdList.add('07L5Y00004iThzpUAC');
-      return logIdList;
+      List<ApexLog> logList = [
+        SELECT Id, LogLength
+        FROM ApexLog
+        WHERE LogUser.Name = :searchTerm
+        ORDER BY logLength DESC
+      ];
+      return logList;
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
+  }
+  @AuraEnabled
+  public static List<String> getTraceTargets() {
+    List<String> traceList = new List<String>();
+    try {
+      AggregateResult[] groupedResults = [
+        SELECT Count(Id), LogUser.Name
+        FROM ApexLog
+        GROUP BY LogUser.Name
+      ];
+      for (AggregateResult ar : groupedResults) {
+        traceList.add((String) ar.get('Name'));
+      }
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+    return traceList;
   }
 }
